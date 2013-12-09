@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "cucumber-rest-api"
   s.version     = Cucumber::RestAPI::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Nic Jackson, Anu "]
-  s.email       = ["di@marks-and-spencer.com"]
+  s.authors     = ["Anupama Vijaykumar,Nic Jackson"]
+  s.email       = ["anupama.vijaykumar@marks-and-spencer.com"]
   s.homepage    = "https://github.com/DigitalInnovation/cucumber_rest_api"
   s.summary     = %q{Cucumber steps to easily test REST-based XML and JSON APIs}
   s.description = %q{Cucumber steps to easily test REST-based XML and JSON APIs}
