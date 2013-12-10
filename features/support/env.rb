@@ -1,1 +1,0 @@
-  $SERVER_PATH = "http://goserverdev.cloudapp.net:3100"
