@@ -17,3 +17,5 @@ Simple set up to create scaffold features and custom steps files
 
 ###Acknowledgements
 https://github.com/jayzes/cucumber-api-steps
+
+https://github.com/lukeredpath/mimic
