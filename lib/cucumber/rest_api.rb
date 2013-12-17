@@ -146,12 +146,6 @@ Then /^the JSON response should be:$/ do |json|
   end
 end
 
-Then(/^the JSON should have "(.*)" elements$/) do |element|
-  json = JSON.parse(last_response.body)
-  total_elements = json.count
-  total_elements.should == element.to_i
-end
-
 Then /^the JSON response should have "([^"]*)" with a length of (\d+)$/ do |json_path, length|
   json = JSON.parse(last_response.body)
   results = JsonPath.new(json_path).on(json)
