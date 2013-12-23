@@ -34,7 +34,7 @@ class Object
     if request_opts[:method] == :post
           request, body = send_post_request(uri, request_opts)
     elsif request_opts[:method] == :put
-          request,body  = perform_put_request(uri, request_opts)      
+          request, body  = perform_put_request(uri, request_opts)      
     elsif request_opts[:method] == :get
           request = send_get_request(uri, request_opts)
     elsif request_opts[:method] == :delete
@@ -58,7 +58,7 @@ class Object
     else
       body = request_opts[:input]
     end
-    return request,body
+    return request, body
   end
 
   def perform_put_request uri,request_opts
@@ -69,7 +69,7 @@ class Object
     else
         body = request_opts[:input]
     end
-    return request
+    return request, body
   end
 
   def send_get_request uri,request_opts
