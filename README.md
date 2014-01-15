@@ -14,8 +14,6 @@ We have integrated the Mimic web service as well so that we can mock the web ser
 ###Status
 Currently we have implemented JSON based REST support, XML based support will be coming in a later release.  
 
-###Coming Soon
-Simple set up to create scaffold features and custom steps files   
 
 ###Acknowledgements
 https://github.com/jayzes/cucumber-api-steps
