@@ -1,4 +1,5 @@
 require "net/http"
+require "net/https"
 require "uri"
 require 'json'
 
@@ -29,12 +30,13 @@ class Object
   def request path,request_opts
     req = "#{$SERVER_PATH}" + path
     uri = URI.parse(req)
-    http = Net::HTTP.new(uri.host, uri.port)   
-    
+
+    http = Net::HTTP.new(uri.host, uri.port)
+
     if request_opts[:method] == :post
           request, body = send_post_request(uri, request_opts)
     elsif request_opts[:method] == :put
-          request, body  = perform_put_request(uri, request_opts)      
+          request, body  = perform_put_request(uri, request_opts)     
     elsif request_opts[:method] == :get
           request = send_get_request(uri, request_opts)
     elsif request_opts[:method] == :delete
@@ -46,7 +48,15 @@ class Object
       @headers.each { |k,v| request.add_field(k, v) }
       @headers = nil
     end
-    @response = http.request(request,body)
+
+    if req.include? "https" 
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE  
+        @response = http.request(request,body)
+    else  
+       http = Net::HTTP.new(uri.host, uri.port)
+       @response = http.request(request,body)
+    end
   end
 
  
