@@ -123,15 +123,23 @@ Then /^the XML response should (not)?\s?have "([^"]*)"$/ do |negative, xpath|
   end
 end
 
-Then /^the XML response should have "([^"]*)" with the text "([^"]*)"$/ do |xpath, text|
+Then /^the XML response should (not)?\s?have "([^"]*)" with the text "([^"]*)"$/ do |negative, xpath, text|
   parsed_response = Nokogiri::XML(last_response.body)
   elements = parsed_response.xpath(xpath)
-  if self.respond_to?(:should)
-    elements.should_not be_empty, "could not find #{xpath} in:\n#{last_response.body}"
-    elements.find { |e| e.text == text }.should_not be_nil, "found elements but could not find #{text} in:\n#{elements.inspect}"
+  if negative.present?
+    if self.respond_to?(:should)
+      elements.find { |e| e.text == text }.should be_nil, "found elements with #{text} in:\n#{elements.inspect}"
+    else
+      assert !elements.find { |e| e.text == text }, "found elements with #{text} in:\n#{elements.inspect}"
+    end
   else
-    assert !elements.empty?, "could not find #{xpath} in:\n#{last_response.body}"
-    assert elements.find { |e| e.text == text }, "found elements but could not find #{text} in:\n#{elements.inspect}"
+    if self.respond_to?(:should)
+      elements.should_not be_empty, "could not find #{xpath} in:\n#{last_response.body}"
+      elements.find { |e| e.text == text }.should_not be_nil, "found elements but could not find #{text} in:\n#{elements.inspect}"
+    else
+      assert !elements.empty?, "could not find #{xpath} in:\n#{last_response.body}"
+      assert elements.find { |e| e.text == text }, "found elements but could not find #{text} in:\n#{elements.inspect}"
+    end
   end
 end
 
