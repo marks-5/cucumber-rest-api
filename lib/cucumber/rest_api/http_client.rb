@@ -1,29 +1,26 @@
 require "net/http"
 require "net/https"
 require "uri"
-require 'json'
+require "json"
 
 class Object
-  
+
   @headers == nil
 
   def blank?
-      respond_to?(:empty?) ? empty? : !self
-    end
+    respond_to?(:empty?) ? empty? : !self
+  end
 
-    def present?
-      !blank?
-    end
+  def present?
+    !blank?
+  end
 
   def header key, value
-    if @headers == nil
-      @headers = Hash.new(0)
-    end
-
+    @headers = Hash.new(0) if @headers == nil
     @headers[key] = value
   end
 
-   def last_response
+  def last_response
     return @response
   end
 
@@ -34,13 +31,13 @@ class Object
     http = Net::HTTP.new(uri.host, uri.port)
 
     if request_opts[:method] == :post
-          request, body = send_post_request(uri, request_opts)
+      request, body = send_post_request(uri, request_opts)
     elsif request_opts[:method] == :put
-          request, body  = perform_put_request(uri, request_opts)     
+      request, body  = perform_put_request(uri, request_opts)
     elsif request_opts[:method] == :get
-          request = send_get_request(uri, request_opts)
+      request = send_get_request(uri, request_opts)
     elsif request_opts[:method] == :delete
-          request, body = perform_delete_request(uri, request_opts)
+      request, body = perform_delete_request(uri, request_opts)
     end
 
     #do we have any headers to add?
@@ -49,37 +46,24 @@ class Object
       @headers = nil
     end
 
-    if req.include? "https" 
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE  
-        @response = http.request(request,body)
-    else  
-       http = Net::HTTP.new(uri.host, uri.port)
-       @response = http.request(request,body)
+    if req.include? "https"
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @response = http.request(request,body)
+    else
+      http = Net::HTTP.new(uri.host, uri.port)
+      @response = http.request(request,body)
     end
   end
 
- 
   def send_post_request uri,request_opts
     request = Net::HTTP::Post.new(uri.request_uri)
-    body = nil
-    if request_opts[:params]
-      body = request_opts[:params].to_json
-    else
-      body = request_opts[:input]
-    end
-    return request, body
+    return request, format_request_options(request_opts)
   end
 
   def perform_put_request uri,request_opts
     request = Net::HTTP::Put.new(uri.request_uri)
-    body = nil
-    if request_opts[:params]
-        body = request_opts[:params].to_json
-    else
-        body = request_opts[:input]
-    end
-    return request, body
+    return request, format_request_options(request_opts)
   end
 
   def send_get_request uri,request_opts
@@ -87,14 +71,17 @@ class Object
     return request
   end
 
-  
   def perform_delete_request uri,request_opts
     request = Net::HTTP::Delete.new(uri.request_uri)
+    return request, format_request_options(request_opts)
+  end
+
+  def format_request_options request_opts
     body = nil
     if request_opts[:params]
-        body = request_opts[:params].to_json
+      body = request_opts[:params].to_json
     else
-        body = request_opts[:input]
+      body = request_opts[:input]
     end
     return request, body
   end
