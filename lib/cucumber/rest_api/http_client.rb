@@ -40,7 +40,7 @@ class Object
     elsif request_opts[:method] == :get
           request = send_get_request(uri, request_opts)
     elsif request_opts[:method] == :delete
-          request = perform_delete_request(uri, request_opts)
+          request, body = perform_delete_request(uri, request_opts)
     end
 
     #do we have any headers to add?
@@ -90,7 +90,13 @@ class Object
   
   def perform_delete_request uri,request_opts
     request = Net::HTTP::Delete.new(uri.request_uri)
-    return request
+    body = nil
+    if request_opts[:params]
+        body = request_opts[:params].to_json
+    else
+        body = request_opts[:input]
+    end
+    return request, body
   end
 
 end
