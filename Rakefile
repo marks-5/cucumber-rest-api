@@ -3,5 +3,5 @@ task :build do
 end
 
 task :localinstall do
-	sh "gem install ./cucumber-rest-api-0.3.gem"
+	sh "gem install ./cucumber-rest-api-0.4.gem"
 end
