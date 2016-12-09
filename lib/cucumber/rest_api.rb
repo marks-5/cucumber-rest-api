@@ -6,6 +6,14 @@ require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumb
 
 require 'cucumber/rest_api/http_client.rb'
 
+require 'rspec'
+
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = :should
+  end
+end
+
 Given /^I set headers:$/ do |headers|
   headers.rows_hash.each {|k,v| header k, v }
 end
